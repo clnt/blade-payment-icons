@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - production
+      - dev
+    tags:
+      - 1.*
+  pull_request:
+    branches: [ production ]
+  workflow_dispatch:
+
+jobs:
+  phpcs:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['8.2', '8.3', '8.4']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.version }}
+          tools: composer:v2
+      - run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - run: composer test-quality
+
+  pest:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['8.2', '8.3', '8.4']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.version }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, exif, iconv
+          coverage: xdebug
+      - run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+      - run: ./vendor/bin/pest --coverage-clover=coverage.xml
+      - run: bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
