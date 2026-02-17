@@ -47,11 +47,14 @@ class BladePaymentIconsServiceProvider extends ServiceProvider
 
     /**
      * @param array<string, mixed> $config
+     * @throws \BladeUI\Icons\Exceptions\CannotRegisterIconSet
      */
     protected function registerDefaultIconSet(Factory $factory, array $config): void
     {
         $configFormat = Arr::get($config, 'default_format', Format::Flat);
-        $defaultFormat = $configFormat instanceof Format ? $configFormat : (Format::tryFrom($configFormat) ?? Format::Flat);
+        $defaultFormat = $configFormat instanceof Format ? $configFormat : (
+            Format::tryFrom($configFormat) ?? Format::Flat
+        );
 
         $factory->add('payment-icons', [
             'path' => __DIR__ . '/../resources/svg/' . $defaultFormat->directory(),
@@ -62,6 +65,7 @@ class BladePaymentIconsServiceProvider extends ServiceProvider
 
     /**
      * @param array<string, mixed> $config
+     * @throws \BladeUI\Icons\Exceptions\CannotRegisterIconSet
      */
     protected function registerFormatIconSets(Factory $factory, array $config): void
     {
