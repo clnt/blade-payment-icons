@@ -245,4 +245,3 @@ $utilities->getCardsByCountry('BR', ['includeGlobal' => false]); // ['Elo', 'Hip
 ## Credits
 
 SVG icons and card utilities sourced from [react-svg-credit-card-payment-icons](https://github.com/marcovoliveira/react-svg-credit-card-payment-icons)
-

@@ -13,11 +13,11 @@
         "mastercard",
         "amex"
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "authors": [
         {
-            "name": "clntdev",
-            "email": "dev@clnt.dev"
+            "name": "Matt Clinton",
+            "email": "matt@mattc.dev"
         }
     ],
     "require": {
