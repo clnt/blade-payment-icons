@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Clntdev\BladePaymentIcons\Format;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -12,7 +14,7 @@ return [
     | Available formats: flat, flatRounded, logo, logoBorder, mono, monoOutline
     |
     */
-    'default_format' => 'flat',
+    'default_format' => Format::Flat,
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +47,7 @@ return [
     | The fallback icon to use when a requested icon is not found.
     |
     */
-    'fallback' => 'generic',
+    'fallback' => Format::FALLBACK_ICON,
 
     /*
     |--------------------------------------------------------------------------
@@ -59,12 +61,12 @@ return [
     'blade_icons' => [
         'enabled' => true,
         'sets' => [
-            'flat' => ['prefix' => 'payflat'],
-            'flat-rounded' => ['prefix' => 'payflatrounded'],
-            'logo' => ['prefix' => 'paylogo'],
-            'logo-border' => ['prefix' => 'paylogoborder'],
-            'mono' => ['prefix' => 'paymono'],
-            'mono-outline' => ['prefix' => 'paymonooutline'],
+            Format::Flat->directory() => ['prefix' => 'payflat'],
+            Format::FlatRounded->directory() => ['prefix' => 'payflatrounded'],
+            Format::Logo->directory() => ['prefix' => 'paylogo'],
+            Format::LogoBorder->directory() => ['prefix' => 'paylogoborder'],
+            Format::Mono->directory() => ['prefix' => 'paymono'],
+            Format::MonoOutline->directory() => ['prefix' => 'paymonooutline'],
         ],
     ],
 

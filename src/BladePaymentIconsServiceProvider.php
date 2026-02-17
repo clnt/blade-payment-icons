@@ -10,7 +10,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class BladePaymentIconsServiceProvider extends ServiceProvider
 {
@@ -51,12 +50,13 @@ class BladePaymentIconsServiceProvider extends ServiceProvider
      */
     protected function registerDefaultIconSet(Factory $factory, array $config): void
     {
-        $defaultDir = Str::kebab(Arr::get($config, 'default_format', 'flat'));
+        $configFormat = Arr::get($config, 'default_format', Format::Flat);
+        $defaultFormat = $configFormat instanceof Format ? $configFormat : (Format::tryFrom($configFormat) ?? Format::Flat);
 
         $factory->add('payment-icons', [
-            'path' => __DIR__ . '/../resources/svg/' . $defaultDir,
+            'path' => __DIR__ . '/../resources/svg/' . $defaultFormat->directory(),
             'prefix' => Arr::get($config, 'prefix', 'payicon'),
-            'fallback' => Arr::get($config, 'fallback', 'generic'),
+            'fallback' => Arr::get($config, 'fallback', Format::FALLBACK_ICON),
         ]);
     }
 
@@ -65,7 +65,7 @@ class BladePaymentIconsServiceProvider extends ServiceProvider
      */
     protected function registerFormatIconSets(Factory $factory, array $config): void
     {
-        $fallback = Arr::get($config, 'fallback', 'generic');
+        $fallback = Arr::get($config, 'fallback', Format::FALLBACK_ICON);
 
         foreach (Arr::get($config, 'blade_icons.sets', []) as $format => $setConfig) {
             $factory->add('payment-icons-' . $format, [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Clntdev\BladePaymentIcons\Tests\Feature;
 
 use Clntdev\BladePaymentIcons\Components\PaymentIcon;
+use Clntdev\BladePaymentIcons\Format;
 use Clntdev\BladePaymentIcons\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
 use PHPUnit\Framework\Attributes\Test;
@@ -62,12 +63,12 @@ class PaymentIconTest extends TestCase
     #[Test]
     public function all_formats_render(): void
     {
-        collect(['flat', 'flatRounded', 'logo', 'logoBorder', 'mono', 'monoOutline'])
-            ->each(function (string $format): void {
-                $component = new PaymentIcon('Visa', format: $format);
+        collect(Format::cases())
+            ->each(function (Format $format): void {
+                $component = new PaymentIcon('Visa', format: $format->value);
                 $html = $this->renderComponent($component);
 
-                $this->assertStringContainsString('<svg', $html, "Format {$format} should render SVG");
+                $this->assertStringContainsString('<svg', $html, "Format {$format->value} should render SVG");
             });
     }
 

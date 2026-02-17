@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Clntdev\BladePaymentIcons\Components;
 
 use Clntdev\BladePaymentIcons\CardMetadata;
+use Clntdev\BladePaymentIcons\Format;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class PaymentIcon extends Component
@@ -39,7 +39,9 @@ class PaymentIcon extends Component
         int|float|null $height = null
     ) {
         $this->type = $type;
-        $this->format = $format ?? config('blade-payment-icons.default_format', 'flat');
+        $configFormat = config('blade-payment-icons.default_format', Format::Flat);
+        $defaultFormat = $configFormat instanceof Format ? $configFormat->value : $configFormat;
+        $this->format = $format ?? $defaultFormat;
         $this->variant = $variant;
 
         $resolved = app(CardMetadata::class)->resolveAlias($type);
@@ -72,7 +74,8 @@ class PaymentIcon extends Component
 
     protected function resolveSvgPath(): string
     {
-        $formatDir = Str::kebab($this->format);
+        $format = Format::tryFrom($this->format) ?? Format::Flat;
+        $formatDir = $format->directory();
 
         $typeForFile = strtolower($this->resolvedType);
 
@@ -93,13 +96,13 @@ class PaymentIcon extends Component
             }
         }
 
-        $genericPath = $basePath . '/' . $formatDir . '/generic.svg';
+        $genericPath = $basePath . '/' . $formatDir . '/' . Format::FALLBACK_ICON . '.svg';
 
         if (file_exists($genericPath)) {
             return $genericPath;
         }
 
-        return $basePath . '/flat-rounded/generic.svg';
+        return $basePath . '/' . Format::FlatRounded->directory() . '/' . Format::FALLBACK_ICON . '.svg';
     }
 
     protected function getSvgBasePath(): string
