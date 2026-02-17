@@ -6,6 +6,7 @@ namespace Clntdev\BladePaymentIcons\Components;
 
 use Clntdev\BladePaymentIcons\CardMetadata;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class PaymentIcon extends Component
@@ -71,8 +72,7 @@ class PaymentIcon extends Component
 
     protected function resolveSvgPath(): string
     {
-        $formatDirectories = config('blade-payment-icons.format_directories', []);
-        $formatDir = $formatDirectories[$this->format] ?? $this->format;
+        $formatDir = Str::kebab($this->format);
 
         $typeForFile = strtolower($this->resolvedType);
 

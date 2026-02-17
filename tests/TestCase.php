@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Clntdev\BladePaymentIcons\Tests;
 
+use BladeUI\Icons\BladeIconsServiceProvider;
 use Clntdev\BladePaymentIcons\BladePaymentIconsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -15,6 +16,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders(mixed $app): array //phpcs:ignore
     {
         return [
+            BladeIconsServiceProvider::class,
             BladePaymentIconsServiceProvider::class,
         ];
     }

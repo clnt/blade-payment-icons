@@ -27,6 +27,49 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Blade Icons Prefix
+    |--------------------------------------------------------------------------
+    |
+    | The prefix used when accessing icons via the blade-icons ecosystem.
+    | This applies to the default format set. Icons are accessible as:
+    | <x-{prefix}-visa />, @svg('{prefix}-visa'), {{ svg('{prefix}-visa') }}
+    |
+    */
+    'prefix' => 'payicon',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Blade Icons Fallback
+    |--------------------------------------------------------------------------
+    |
+    | The fallback icon to use when a requested icon is not found.
+    |
+    */
+    'fallback' => 'generic',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Blade Icons Format Sets
+    |--------------------------------------------------------------------------
+    |
+    | Each format is registered as a separate blade-icons set with its own
+    | prefix. Set enabled to false to disable blade-icons integration entirely.
+    |
+    */
+    'blade_icons' => [
+        'enabled' => true,
+        'sets' => [
+            'flat' => ['prefix' => 'payflat'],
+            'flat-rounded' => ['prefix' => 'payflatrounded'],
+            'logo' => ['prefix' => 'paylogo'],
+            'logo-border' => ['prefix' => 'paylogoborder'],
+            'mono' => ['prefix' => 'paymono'],
+            'mono-outline' => ['prefix' => 'paymonooutline'],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Card Definitions
     |--------------------------------------------------------------------------
     |
@@ -311,22 +354,5 @@ return [
             'formatPattern' => null,
             'issuingCountries' => null,
         ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Format Directory Mapping
-    |--------------------------------------------------------------------------
-    |
-    | Maps format names to their corresponding directory names.
-    |
-    */
-    'format_directories' => [
-        'flat' => 'flat',
-        'flatRounded' => 'flat-rounded',
-        'logo' => 'logo',
-        'logoBorder' => 'logo-border',
-        'mono' => 'mono',
-        'monoOutline' => 'mono-outline',
     ],
 ];
